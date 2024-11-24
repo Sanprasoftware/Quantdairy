@@ -11,7 +11,6 @@ def execute(filters=None):
     return columns, data
 
 def get_columns():
-    # Get distinct route names for dynamic column generation
     routes = frappe.db.sql("SELECT name FROM `tabRoute Master`", as_list=True)
     columns = [
         {
@@ -54,7 +53,7 @@ def get_data(filters):
         SELECT
             r.name AS route,
             y.item_code AS item_code,
-            y.item_name AS item_name,
+            i.item_name AS item_name,
             SUM(y.stock_qty) AS qty,
             SUM(y.base_amount) AS amount
         FROM
@@ -63,10 +62,16 @@ def get_data(filters):
             `tabSales Invoice` x ON r.name = x.route
         LEFT JOIN
             `tabSales Invoice Item` y ON x.name = y.parent
+        LEFT JOIN
+            `tabItem` i ON y.item_code = i.item_code
         WHERE
-            x.posting_date BETWEEN %s AND %s and x.docstatus = 1 
+            x.posting_date BETWEEN %s AND %s 
+            AND x.docstatus = 1 
             AND x.company = %s
+        GROUP BY
+            r.name, y.item_code
     """
+
     
     if item_code:
         conditions.append("y.item_code = %s")
@@ -75,7 +80,7 @@ def get_data(filters):
     if conditions:
         sql_query += " AND " + " AND ".join(conditions)
 
-    sql_query += " GROUP BY r.name, y.item_code, y.item_name"
+    sql_query += " GROUP BY r.name, y.item_code"
 
     data = frappe.db.sql(sql_query, tuple(params), as_dict=True)
     return data
