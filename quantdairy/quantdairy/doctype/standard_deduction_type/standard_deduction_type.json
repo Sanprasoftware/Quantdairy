@@ -1,0 +1,69 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{milk_type}-{deduction_name}",
+ "creation": "2023-11-07 11:23:58.884049",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "deduction_name",
+  "column_break_ehntn",
+  "milk_type",
+  "milk_item"
+ ],
+ "fields": [
+  {
+   "fieldname": "deduction_name",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Deduction Name",
+   "options": "Bill Wise\nLiter Wise\nPercentage Wise",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ehntn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "milk_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Milk Type",
+   "options": "\nCow\nBuffalo\nMix",
+   "reqd": 1
+  },
+  {
+   "fieldname": "milk_item",
+   "fieldtype": "Data",
+   "label": "Milk Item",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-11-08 11:11:59.319163",
+ "modified_by": "Administrator",
+ "module": "quantdairy",
+ "name": "Standard Deduction Type",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

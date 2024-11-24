@@ -1,0 +1,89 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-11-09 12:25:30.037697",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "farmer_code",
+  "column_break_sdrsq",
+  "supplier_name",
+  "section_break_cbtuz",
+  "cow_item",
+  "buffalo_item",
+  "mix_item",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "farmer_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Farmer Code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_sdrsq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "supplier_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Farmer Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_cbtuz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "cow_item",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Cow ",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "buffalo_item",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Buffalo ",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "mix_item",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Mix ",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "default": "True",
+   "fieldname": "status",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Status"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-11-09 15:16:57.278246",
+ "modified_by": "Administrator",
+ "module": "quantdairy",
+ "name": "child extra rate deduction amt",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,137 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{branch}",
+ "creation": "2023-12-12 15:16:46.887363",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "branch",
+  "baud_rate",
+  "station",
+  "column_break_xw1ny",
+  "com_port",
+  "weight_com_port",
+  "fat",
+  "column_break_3aboa",
+  "snf",
+  "clr",
+  "weight",
+  "column_break_iqder",
+  "water",
+  "protein",
+  "density"
+ ],
+ "fields": [
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Branch",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "com_port",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Analyzer COM PORT",
+   "options": "COM1\nCOM2\nCOM3\nCOM4\nCOM5\nCOM6\nCOM7\nCOM8\nCOM9\nCOM10\nCOM11\nCOM12\nCOM13\nCOM14\nCOM15\nCOM16\nCOM17\nCOM18\nCOM19\nCOM20"
+  },
+  {
+   "fieldname": "baud_rate",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Baud Rate",
+   "options": "2400\n9600\n4800\n1200"
+  },
+  {
+   "fieldname": "fat",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Fat",
+   "precision": "2"
+  },
+  {
+   "fieldname": "snf",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "SNF",
+   "precision": "2"
+  },
+  {
+   "fieldname": "clr",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "CLR",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "water",
+   "fieldtype": "Float",
+   "label": "Water",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "protein",
+   "fieldtype": "Float",
+   "label": "Protein",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "density",
+   "fieldtype": "Float",
+   "label": "Density",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "weight",
+   "fieldtype": "Float",
+   "label": "Weight",
+   "precision": "2"
+  },
+  {
+   "fieldname": "weight_com_port",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Weight COM Port",
+   "options": "COM201\nCOM202\nCOM203\nCOM204\nCOM205\nCOM206\nCOM207\nCOM208\nCOM209\nCOM210\nCOM211\nCOM212\nCOM213\nCOM214\nCOM215\nCOM216\nCOM217\nCOM218\nCOM219\nCOM220"
+  },
+  {
+   "fieldname": "station",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Station",
+   "options": "Station1\nStation2\nStation3\nStation4\nStation5\nStation6\nStation7\nStation8\nStation9\nStation10\nStation11\nStation12\nStation13\nStation14\nStation15\nStation16\nStation17\nStation18\nStation19\nStation20"
+  },
+  {
+   "fieldname": "column_break_xw1ny",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_3aboa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_iqder",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-12-15 10:47:39.983830",
+ "modified_by": "Administrator",
+ "module": "quantdairy",
+ "name": "Hardware Integration Setting Item",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,43 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-12-12 15:18:31.830154",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "hard_intergration"
+ ],
+ "fields": [
+  {
+   "fieldname": "hard_intergration",
+   "fieldtype": "Table",
+   "label": "Hardware Integration Setting",
+   "options": "Hardware Integration Setting Item"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2023-12-12 15:18:56.461559",
+ "modified_by": "Administrator",
+ "module": "quantdairy",
+ "name": "Hardware Integration Setting",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

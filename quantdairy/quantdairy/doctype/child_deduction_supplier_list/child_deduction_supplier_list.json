@@ -1,0 +1,58 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-10-30 16:27:04.676237",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "farmer_id",
+  "farmer_name",
+  "milk_type",
+  "check"
+ ],
+ "fields": [
+  {
+   "fieldname": "farmer_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Farmer ID",
+   "options": "Supplier",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "farmer_id.supplier_name",
+   "fieldname": "farmer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Farmer Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "milk_type",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "MIlk Type",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "check",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Check"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-11-07 17:56:26.907421",
+ "modified_by": "Administrator",
+ "module": "quantdairy",
+ "name": "Child Deduction Supplier List",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

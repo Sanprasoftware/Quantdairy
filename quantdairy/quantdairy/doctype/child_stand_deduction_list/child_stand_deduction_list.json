@@ -1,0 +1,172 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-10-31 14:29:10.953081",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "farmer_code",
+  "column_break_sdrsq",
+  "supplier_name",
+  "section_break_cbtuz",
+  "cow_item",
+  "buffalo_item",
+  "mix_item",
+  "column_break_yyvhb",
+  "litre_wise",
+  "buffalo_liter_wise",
+  "mix_liter_wise",
+  "column_break_fvsrc",
+  "percentage_wise",
+  "buffalo_percentage_wise",
+  "mix_percentage_wise",
+  "column_break_faytt",
+  "bill_wise",
+  "buffalo_bill_wise",
+  "mix_bill_wise",
+  "section_break_60ozz",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "farmer_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Farmer Code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "supplier_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Farmer Name",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "litre_wise",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Cow Liter Wise ",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "percentage_wise",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Cow Percentage Wise",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "bill_wise",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Cow Bill Wise",
+   "precision": "2"
+  },
+  {
+   "default": "True",
+   "fieldname": "status",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Status"
+  },
+  {
+   "fieldname": "column_break_sdrsq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_cbtuz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cow_item",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Cow Item",
+   "read_only": 1
+  },
+  {
+   "fieldname": "buffalo_item",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Buffalo Item",
+   "read_only": 1
+  },
+  {
+   "fieldname": "mix_item",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Mix Item",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_yyvhb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "buffalo_liter_wise",
+   "fieldtype": "Float",
+   "label": "Buffalo Liter Wise ",
+   "precision": "2"
+  },
+  {
+   "fieldname": "mix_liter_wise",
+   "fieldtype": "Float",
+   "label": "Mix Liter Wise ",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_fvsrc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "buffalo_percentage_wise",
+   "fieldtype": "Float",
+   "label": "Buffalo Percentage Wise",
+   "precision": "2"
+  },
+  {
+   "fieldname": "mix_percentage_wise",
+   "fieldtype": "Float",
+   "label": "Mix Percentage Wise",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_faytt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "buffalo_bill_wise",
+   "fieldtype": "Float",
+   "label": "Buffalo Bill Wise",
+   "precision": "2"
+  },
+  {
+   "fieldname": "mix_bill_wise",
+   "fieldtype": "Float",
+   "label": "Mix Bill Wise",
+   "precision": "2"
+  },
+  {
+   "fieldname": "section_break_60ozz",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-11-07 17:58:04.396921",
+ "modified_by": "Administrator",
+ "module": "quantdairy",
+ "name": "child Stand Deduction List",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

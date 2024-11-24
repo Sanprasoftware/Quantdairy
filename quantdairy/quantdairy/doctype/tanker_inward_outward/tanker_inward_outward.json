@@ -1,0 +1,250 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "TANKER-IO-.####",
+ "creation": "2024-07-31 11:21:35.181971",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "tanker_process",
+  "party_code",
+  "column_break_pisey",
+  "date",
+  "party_name",
+  "column_break_nbzv6",
+  "time",
+  "tanker_number",
+  "column_break_0k8wl",
+  "shift",
+  "driver_name",
+  "column_break_f5asg",
+  "gate_pass_no",
+  "no_of_division",
+  "section_break_xo9q7",
+  "tanker_division",
+  "column_break_sywbt",
+  "total_quantity",
+  "type",
+  "column_break_bjktn",
+  "tanker_remark",
+  "seal_remark",
+  "column_break_b1gq9",
+  "total_basic",
+  "total_basic_amount",
+  "round_off",
+  "net_amount",
+  "milk_entry_details_section",
+  "dcs",
+  "column_break_6pujm",
+  "milk_entry_details",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "tanker_process",
+   "fieldtype": "Select",
+   "label": "Tanker Process",
+   "options": "\nInward\nOutward"
+  },
+  {
+   "fieldname": "party_code",
+   "fieldtype": "Link",
+   "label": "Party Code",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "column_break_pisey",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fetch_from": "party_code.supplier_name",
+   "fieldname": "party_name",
+   "fieldtype": "Data",
+   "label": "Party Name"
+  },
+  {
+   "fieldname": "column_break_nbzv6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "now",
+   "fieldname": "time",
+   "fieldtype": "Time",
+   "label": "Time"
+  },
+  {
+   "fieldname": "tanker_number",
+   "fieldtype": "Data",
+   "label": "Tanker Number"
+  },
+  {
+   "fieldname": "column_break_0k8wl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "shift",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Shift",
+   "options": "\nMorning\nEvening",
+   "reqd": 1
+  },
+  {
+   "fieldname": "driver_name",
+   "fieldtype": "Link",
+   "label": "Driver Name",
+   "options": "Driver"
+  },
+  {
+   "fieldname": "column_break_f5asg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gate_pass_no",
+   "fieldtype": "Link",
+   "label": "Gate Pass",
+   "options": "Gate Pass"
+  },
+  {
+   "fieldname": "no_of_division",
+   "fieldtype": "Select",
+   "label": "No. Of Division",
+   "options": "\n1\n2\n3\n4"
+  },
+  {
+   "fieldname": "section_break_xo9q7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_sywbt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_quantity",
+   "fieldtype": "Float",
+   "label": "Total Quantity"
+  },
+  {
+   "fieldname": "column_break_bjktn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tanker_remark",
+   "fieldtype": "Long Text",
+   "label": "Tanker Remark",
+   "max_height": "110px"
+  },
+  {
+   "fieldname": "seal_remark",
+   "fieldtype": "Long Text",
+   "label": "Seal Remark",
+   "max_height": "110px"
+  },
+  {
+   "fieldname": "column_break_b1gq9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_basic",
+   "fieldtype": "Float",
+   "label": "Total Basic"
+  },
+  {
+   "fieldname": "total_basic_amount",
+   "fieldtype": "Float",
+   "label": "Total Basic Amount"
+  },
+  {
+   "fieldname": "round_off",
+   "fieldtype": "Data",
+   "label": "Round Off"
+  },
+  {
+   "fieldname": "net_amount",
+   "fieldtype": "Data",
+   "label": "Net Amount"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Tanker Inward Outward",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "tanker_division",
+   "fieldtype": "Table",
+   "label": "Tanker Division",
+   "options": "Tanker Inward Divison"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "\nSales\nPurchase"
+  },
+  {
+   "fieldname": "dcs",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "DCS",
+   "options": "Warehouse",
+   "reqd": 1
+  },
+  {
+   "fieldname": "milk_entry_details_section",
+   "fieldtype": "Section Break",
+   "label": "Milk Entry Details"
+  },
+  {
+   "fieldname": "milk_entry_details",
+   "fieldtype": "Table",
+   "label": "Milk Entry Details",
+   "options": "Tanker Milk Entry Details",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_6pujm",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-09-09 13:53:53.340446",
+ "modified_by": "Administrator",
+ "module": "quantdairy",
+ "name": "Tanker Inward Outward",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

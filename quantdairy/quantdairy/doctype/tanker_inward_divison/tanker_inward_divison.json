@@ -1,0 +1,178 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-07-31 10:25:35.345017",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "division",
+  "fat_",
+  "mbrt",
+  "column_break_fsqws",
+  "slip_number",
+  "clr",
+  "cob",
+  "column_break_ekyhg",
+  "cmbm",
+  "snf_",
+  "basic",
+  "column_break_a5ur7",
+  "milk_type",
+  "temperature",
+  "basic_amount",
+  "column_break_vhdvt",
+  "quantity",
+  "acidity_",
+  "over",
+  "temp_charges",
+  "column_break_jxogv",
+  "quantity_kg",
+  "protein_",
+  "chilling",
+  "deposit",
+  "section_break_q6j1a"
+ ],
+ "fields": [
+  {
+   "fieldname": "division",
+   "fieldtype": "Data",
+   "label": "Division",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_fsqws",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "slip_number",
+   "fieldtype": "Data",
+   "label": "Slip Number"
+  },
+  {
+   "fieldname": "column_break_ekyhg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cmbm",
+   "fieldtype": "Select",
+   "label": "CM/BM",
+   "options": "Cow\nBuffalo\nMix"
+  },
+  {
+   "fieldname": "column_break_a5ur7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "milk_type",
+   "fieldtype": "Link",
+   "label": "Milk Type",
+   "options": "Milk Types"
+  },
+  {
+   "fieldname": "column_break_vhdvt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "column_break_jxogv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "quantity_kg",
+   "fieldtype": "Float",
+   "label": "Quantity (KG)"
+  },
+  {
+   "fieldname": "fat_",
+   "fieldtype": "Percent",
+   "label": "FAT %"
+  },
+  {
+   "fieldname": "clr",
+   "fieldtype": "Float",
+   "label": "CLR"
+  },
+  {
+   "fieldname": "snf_",
+   "fieldtype": "Percent",
+   "label": "SNF %"
+  },
+  {
+   "fieldname": "temperature",
+   "fieldtype": "Float",
+   "label": "Temperature"
+  },
+  {
+   "fieldname": "acidity_",
+   "fieldtype": "Percent",
+   "label": "Acidity %"
+  },
+  {
+   "fieldname": "protein_",
+   "fieldtype": "Percent",
+   "label": "Protein %"
+  },
+  {
+   "fieldname": "mbrt",
+   "fieldtype": "Data",
+   "label": "MBRT"
+  },
+  {
+   "fieldname": "cob",
+   "fieldtype": "Select",
+   "label": "C.O.B",
+   "options": "\nPositive\nNegative"
+  },
+  {
+   "fieldname": "basic",
+   "fieldtype": "Float",
+   "label": "Basic"
+  },
+  {
+   "fieldname": "basic_amount",
+   "fieldtype": "Float",
+   "label": "Basic Amount"
+  },
+  {
+   "fieldname": "over",
+   "fieldtype": "Float",
+   "label": "Over"
+  },
+  {
+   "fieldname": "chilling",
+   "fieldtype": "Float",
+   "label": "Chilling"
+  },
+  {
+   "fieldname": "temp_charges",
+   "fieldtype": "Float",
+   "label": "Temp Charges"
+  },
+  {
+   "fieldname": "deposit",
+   "fieldtype": "Float",
+   "label": "Deposit"
+  },
+  {
+   "fieldname": "section_break_q6j1a",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-07-31 12:21:37.532940",
+ "modified_by": "Administrator",
+ "module": "quantdairy",
+ "name": "Tanker Inward Divison",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

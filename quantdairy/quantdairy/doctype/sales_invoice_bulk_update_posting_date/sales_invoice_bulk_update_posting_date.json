@@ -1,0 +1,116 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-03-26 11:54:18.526589",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "from_date",
+  "column_break_12vq8",
+  "to_date",
+  "column_break_vfji9",
+  "sales_invoices",
+  "select_all",
+  "section_break_saidx",
+  "posting_date",
+  "column_break_lw9ve",
+  "posting_time",
+  "column_break_hoabu",
+  "payment_due_date",
+  "section_break_kfetr",
+  "date_update"
+ ],
+ "fields": [
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "column_break_12vq8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "section_break_saidx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "column_break_lw9ve",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_time",
+   "fieldtype": "Time",
+   "label": "Posting Time"
+  },
+  {
+   "fieldname": "column_break_hoabu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payment_due_date",
+   "fieldtype": "Date",
+   "label": "Payment Due Date"
+  },
+  {
+   "fieldname": "section_break_kfetr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sales_invoices",
+   "fieldtype": "Button",
+   "label": "Get Sales Invoices"
+  },
+  {
+   "fieldname": "date_update",
+   "fieldtype": "Table",
+   "label": "Sales Invoice Date Update",
+   "options": "Sales Invoice Date Update"
+  },
+  {
+   "fieldname": "column_break_vfji9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "select_all",
+   "fieldtype": "Button",
+   "label": "Select All"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-11-24 09:17:12.913704",
+ "modified_by": "Administrator",
+ "module": "quantdairy",
+ "name": "Sales Invoice Bulk Update Posting Date",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

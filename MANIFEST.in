@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include quantdairy *.css
+recursive-include quantdairy *.csv
+recursive-include quantdairy *.html
+recursive-include quantdairy *.ico
+recursive-include quantdairy *.js
+recursive-include quantdairy *.json
+recursive-include quantdairy *.md
+recursive-include quantdairy *.png
+recursive-include quantdairy *.py
+recursive-include quantdairy *.svg
+recursive-include quantdairy *.txt
+recursive-exclude quantdairy *.pyc

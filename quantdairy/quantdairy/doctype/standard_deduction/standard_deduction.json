@@ -1,0 +1,174 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{warehouse__branch}",
+ "creation": "2023-10-30 15:39:02.611098",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "warehouse__branch",
+  "column_break_zvzuv",
+  "first_date",
+  "column_break_5xy36",
+  "last_date",
+  "column_break_ocijc",
+  "company",
+  "deduction_type_section",
+  "items",
+  "section_break_rgir8",
+  "get_farmer_list",
+  "column_break_xofz7",
+  "column_break_7wifh",
+  "column_break_vd0a1",
+  "column_break_jnsnn",
+  "column_break_goelb",
+  "check_all",
+  "section_break_lvbiz",
+  "frm_items",
+  "section_break_j2vq3",
+  "show",
+  "deduction"
+ ],
+ "fields": [
+  {
+   "fieldname": "warehouse__branch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Warehouse / Branch",
+   "options": "Warehouse",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_zvzuv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "first_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "From Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_5xy36",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "To Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "deduction_type_section",
+   "fieldtype": "Section Break",
+   "label": "Deduction Type"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "Standard Deduction Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_rgir8",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "check_all",
+   "fieldtype": "Button",
+   "label": "Check All"
+  },
+  {
+   "fieldname": "frm_items",
+   "fieldtype": "Table",
+   "options": "Child Deduction Supplier List"
+  },
+  {
+   "fieldname": "show",
+   "fieldtype": "Button",
+   "label": "Calculate Deduction "
+  },
+  {
+   "fieldname": "section_break_j2vq3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "deduction",
+   "fieldtype": "Table",
+   "label": "Deduction",
+   "options": "child Stand Deduction List",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ocijc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "get_farmer_list",
+   "fieldtype": "Button",
+   "label": "Get Farmer List"
+  },
+  {
+   "fieldname": "column_break_xofz7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_lvbiz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_7wifh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_vd0a1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_jnsnn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_goelb",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-11-07 12:27:49.504009",
+ "modified_by": "Administrator",
+ "module": "quantdairy",
+ "name": "Standard Deduction",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,233 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "LD-.###",
+ "creation": "2024-10-10 10:43:25.281574",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "deduction_type",
+  "loan_amount",
+  "column_break_jny3c",
+  "supplier",
+  "deduction_amount_per_bill",
+  "column_break_uirc9",
+  "supplier_name",
+  "sales_invoice",
+  "mode_of_payment",
+  "column_break_jbj9l",
+  "company",
+  "mode_of_payment_type",
+  "section_break_vggrm",
+  "paid_from",
+  "column_break_ouomn",
+  "paid_to",
+  "column_break_jekbu",
+  "cost_center",
+  "section_break_wccmc",
+  "deduction_instalment_list",
+  "deducted_amount",
+  "section_break_cfwhu",
+  "credit_account",
+  "column_break_cbup2",
+  "debit_account",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "loan_amount",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Loan Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "deduction_amount_per_bill",
+   "fieldtype": "Float",
+   "label": "Deduction Amount Per Bill",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_uirc9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Deduction",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Supplier",
+   "options": "Supplier",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "supplier.supplier_name",
+   "fieldname": "supplier_name",
+   "fieldtype": "Data",
+   "label": "Supplier Name"
+  },
+  {
+   "fieldname": "section_break_vggrm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "credit_account",
+   "fieldtype": "Link",
+   "label": "Credit Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_cbup2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "debit_account",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Debit Account",
+   "options": "Account"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_cfwhu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "deducted_amount",
+   "fieldtype": "Float",
+   "label": "Deducted Amount",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval: doc.deduction_type != \"Material\";",
+   "fieldname": "paid_to",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Paid To",
+   "mandatory_depends_on": "eval: doc.deduction_type != \"Material\";",
+   "options": "Account"
+  },
+  {
+   "fieldname": "column_break_ouomn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: doc.deduction_type != \"Material\";",
+   "fieldname": "paid_from",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Paid From",
+   "mandatory_depends_on": "eval: doc.deduction_type != \"Material\";",
+   "options": "Account"
+  },
+  {
+   "fieldname": "column_break_jekbu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: doc.deduction_type != \"Material\";",
+   "fieldname": "mode_of_payment",
+   "fieldtype": "Link",
+   "label": "Mode of Payment",
+   "mandatory_depends_on": "eval: doc.deduction_type != \"Material\";",
+   "options": "Mode of Payment"
+  },
+  {
+   "fieldname": "section_break_wccmc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "mode_of_payment.type",
+   "fieldname": "mode_of_payment_type",
+   "fieldtype": "Data",
+   "label": "Mode of Payment Type"
+  },
+  {
+   "depends_on": "eval: doc.deduction_type != \"Material\";",
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "mandatory_depends_on": "eval: doc.mode_of_payment_type != \"Cash\";",
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "deduction_type",
+   "fieldtype": "Select",
+   "label": "Deduction Type",
+   "options": "\nFarmer Loan\nTransporter Loan\nMaterial"
+  },
+  {
+   "fieldname": "column_break_jny3c",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "deduction_instalment_list",
+   "fieldtype": "Table",
+   "label": "Deduction Instalment List",
+   "options": "Deduction Instalment List",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_jbj9l",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "depends_on": "eval: doc.deduction_type == \"Material\";",
+   "fieldname": "sales_invoice",
+   "fieldtype": "Link",
+   "label": "Sales Invoice",
+   "mandatory_depends_on": "eval: doc.deduction_type == \"Material\";",
+   "options": "Sales Invoice"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [
+  {
+   "link_doctype": "Payment Entry",
+   "link_fieldname": "custom_deduction"
+  }
+ ],
+ "modified": "2024-10-30 12:46:52.576160",
+ "modified_by": "Administrator",
+ "module": "quantdairy",
+ "name": "Deduction",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
