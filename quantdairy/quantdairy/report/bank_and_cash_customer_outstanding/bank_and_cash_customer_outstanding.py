@@ -19,18 +19,21 @@ def execute(filters=None):
 
     # Add new columns
     new_columns = [
+        {'label': 'Credit Limit', 'fieldname': 'credit_limit', 'fieldtype': 'Currency', 'options': 'currency', 'width': 120},
         {'label': 'Cash Receipts', 'fieldname': 'cash_amount', 'fieldtype': 'Currency', 'options': 'currency', 'width': 120},
         {'label': 'Bank Receipts', 'fieldname': 'bank_amount', 'fieldtype': 'Currency', 'options': 'currency', 'width': 120}
     ]
+    columns.insert(1, {"label": "Customer Name","fieldtype": "Data","fieldname": "party_naming","width": 200,},)
     columns.extend(new_columns)
     
     from_date = filters.get('from_date')
     to_date = filters.get('to_date')
-    data = add_receipts_data(data, from_date, to_date,mode_of_payment_filter)
+    company = filters.get('company')
+    data = add_receipts_data(data, from_date, to_date,mode_of_payment_filter, company)
     
     return columns, data
 
-def add_receipts_data(data, from_date, to_date, mode_of_payment_filter):
+def add_receipts_data(data, from_date, to_date, mode_of_payment_filter, company):
     bank_receipts = {}
     cash_receipts = {}
 
@@ -70,6 +73,8 @@ def add_receipts_data(data, from_date, to_date, mode_of_payment_filter):
         party = row.get('party')
         row['cash_amount'] = cash_receipts.get(party, 0.0)
         row['bank_amount'] = bank_receipts.get(party, 0.0)
+        row['party_naming'] = frappe.db.get_value("Customer", party, "customer_name")
+        row['credit_limit'] = frappe.db.get_value("Customer Credit Limit", {"parent": party, "company": company}, "credit_limit")
 
     return data
 
