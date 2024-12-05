@@ -13,7 +13,7 @@ from erpnext.accounts.report.utils import get_query_columns, get_values_for_colu
 from erpnext.selling.report.item_wise_sales_history.item_wise_sales_history import (
 	get_customer_details,
 )
- 
+
 
 def execute(filters=None):
 	return _execute(filters)
@@ -69,6 +69,7 @@ def _execute(filters=None, additional_table_columns=None, additional_conditions=
 			"item_code": d.item_code,
 			"item_name": d.si_item_name if d.si_item_name else d.i_item_name,
 			"item_group": d.si_item_group if d.si_item_group else d.i_item_group,
+			"gst_treatment": d.gst_treatment,
 			"description": d.description,
 			"invoice": d.parent,
 			"posting_date": d.posting_date,
@@ -175,6 +176,12 @@ def get_columns(additional_table_columns, filters):
 					"fieldname": "item_group",
 					"fieldtype": "Link",
 					"options": "Item Group",
+					"width": 120,
+				},
+				{
+					"label": _("Item Tax Status"),
+					"fieldname": "gst_treatment",
+					"fieldtype": "Data",
 					"width": 120,
 				}
 			]
@@ -333,13 +340,17 @@ def get_conditions(filters, additional_conditions=None):
 
 	for opts in (
 		("company", " and `tabSales Invoice`.company=%(company)s"),
-		("customer", " and `tabSales Invoice`.customer = %(customer)s"),
-		("item_code", " and `tabSales Invoice Item`.item_code = %(item_code)s"),
+		("customer", " and `tabSales Invoice`.customer in %(customer)s"),
+		("item_code", " and `tabSales Invoice Item`.item_code in %(item_code)s"),
 		("from_date", " and `tabSales Invoice`.posting_date>=%(from_date)s"),
 		("to_date", " and `tabSales Invoice`.posting_date<=%(to_date)s"),
 	):
 		if filters.get(opts[0]):
 			conditions += opts[1]
+
+	# Add condition for customer_group
+	if filters.get("customer_group"):
+		conditions += " and `tabSales Invoice`.customer_group in %(customer_group)s"
 
 	if additional_conditions:
 		conditions += additional_conditions
@@ -361,16 +372,14 @@ def get_conditions(filters, additional_conditions=None):
 	if filters.get("delivery_shift"):
 		conditions += """and ifnull(`tabSales Invoice`.delivery_shift, '') = %(delivery_shift)s"""
 
-
-
 	if filters.get("brand"):
 		conditions += """and ifnull(`tabSales Invoice Item`.brand, '') = %(brand)s"""
 
 	if filters.get("item_group"):
-		conditions += """and ifnull(`tabSales Invoice Item`.item_group, '') = %(item_group)s"""
+		conditions += """and ifnull(`tabSales Invoice Item`.item_group, '') in %(item_group)s"""
 
 	if filters.get("item_code"):
-		conditions += """and ifnull(`tabSales Invoice Item`.item_code, '') = %(item_code)s"""
+		conditions += """and ifnull(`tabSales Invoice Item`.item_code, '') in %(item_code)s"""
 
 	if not filters.get("group_by"):
 		conditions += (
@@ -380,6 +389,7 @@ def get_conditions(filters, additional_conditions=None):
 		conditions += get_group_by_conditions(filters, "Sales Invoice")
 
 	return conditions
+
 
 
 def get_group_by_conditions(filters, doctype):
@@ -400,8 +410,10 @@ def get_items(filters, additional_query_columns, additional_conditions=None):
 	return frappe.db.sql(
 		"""
 		select
-			 
-			`tabSales Invoice Item`.name, `tabSales Invoice Item`.parent,
+			
+			`tabSales Invoice Item`.name, 
+			`tabSales Invoice Item`.parent,
+			`tabSales Invoice Item`.gst_treatment,
 			`tabSales Invoice`.posting_date, `tabSales Invoice`.debit_to,
 			`tabSales Invoice`.unrealized_profit_loss_account,
 			`tabSales Invoice`.is_internal_customer,
@@ -542,7 +554,6 @@ def get_tax_accounts(
 	) in tax_details:
 		description = handle_html(description)
 		if description not in tax_columns and tax_amount:
-			# as description is text editor earlier and markup can break the column convention in reports
 			tax_columns.append(description)
 
 		if item_wise_tax_detail:

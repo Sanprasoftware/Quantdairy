@@ -448,6 +448,9 @@ def execute(filters=None):
         "naming_by": ["Selling Settings", "cust_master_name"],
     }
     mode_of_payment_filter = filters.get('mode_of_payment') or []
+    party_filter = filters.get('party') or None
+    party_group_filter = filters.get('party_group') or None
+
     report = PartyLedgerSummaryReport(filters)
     columns, data = report.run(args)
     
@@ -456,25 +459,35 @@ def execute(filters=None):
         {'label': 'Cash Receipts', 'fieldname': 'cash_amount', 'fieldtype': 'Currency', 'options': 'currency', 'width': 120},
         {'label': 'Bank Receipts', 'fieldname': 'bank_amount', 'fieldtype': 'Currency', 'options': 'currency', 'width': 120}
     ]
-    columns.insert(1, {"label": "Customer Name","fieldtype": "Data","fieldname": "party_naming","width": 200,},)
+    columns.insert(1, {"label": "Customer Name", "fieldtype": "Data", "fieldname": "party_naming", "width": 200})
     columns.extend(new_columns)
     
     from_date = filters.get('from_date')
     to_date = filters.get('to_date')
     company = filters.get('company')
-    data = add_receipts_data(data, from_date, to_date,mode_of_payment_filter, company)
+    
+    if filters.date_wise_bifurcation:
+        data = add_receipts_data_bifurcation(data, from_date, to_date, mode_of_payment_filter, company, party_filter, party_group_filter)
+    else:
+        data = add_receipts_data(data, from_date, to_date, mode_of_payment_filter, company, party_filter, party_group_filter)
+    
     return columns, data
 
-def add_receipts_data(data, from_date, to_date, mode_of_payment_filter, company):
-    bank_receipts = {}
-    cash_receipts = {}
 
-    # Prepare the SQL query with mode_of_payment filter
+def add_receipts_data_bifurcation(data, from_date, to_date, mode_of_payment_filter, company, party_filter=None, party_group_filter=None):
     mode_of_payment_conditions = ''
     if mode_of_payment_filter:
         placeholders = ', '.join(['%s'] * len(mode_of_payment_filter))
         mode_of_payment_conditions = f"AND mode_of_payment IN ({placeholders})"
 
+    # Add party and party_group filters
+    party_conditions = ''
+    if party_filter:
+        party_conditions += f"AND party = %s "
+    if party_group_filter:
+        party_conditions += f"AND party IN (SELECT name FROM `tabCustomer` WHERE customer_group = %s) "
+
+    # Fetch bank and cash entries
     bank_entries = frappe.db.sql(f"""
         SELECT party, SUM(paid_amount) AS total_paid, posting_date
         FROM `tabPayment Entry`
@@ -482,8 +495,9 @@ def add_receipts_data(data, from_date, to_date, mode_of_payment_filter, company)
         AND payment_type = 'Receive' AND docstatus = 1
         AND mod_type = 'Bank'
         {mode_of_payment_conditions}
+        {party_conditions}
         GROUP BY party, posting_date
-    """, (from_date, to_date) + tuple(mode_of_payment_filter), as_dict=True)
+    """, (from_date, to_date) + tuple(mode_of_payment_filter) + ((party_filter,) if party_filter else ()) + ((party_group_filter,) if party_group_filter else ()), as_dict=True)
 
     cash_entries = frappe.db.sql(f"""
         SELECT party, SUM(paid_amount) AS total_paid, posting_date
@@ -492,15 +506,83 @@ def add_receipts_data(data, from_date, to_date, mode_of_payment_filter, company)
         AND payment_type = 'Receive' AND docstatus = 1
         AND mod_type = 'Cash'
         {mode_of_payment_conditions}
+        {party_conditions}
         GROUP BY party, posting_date
-    """, (from_date, to_date) + tuple(mode_of_payment_filter), as_dict=True)
-    
-    for entry in bank_entries:
-        bank_receipts[entry['party']] = flt(entry['total_paid'])
+    """, (from_date, to_date) + tuple(mode_of_payment_filter) + ((party_filter,) if party_filter else ()) + ((party_group_filter,) if party_group_filter else ()), as_dict=True)
 
-    for entry in cash_entries:
-        cash_receipts[entry['party']] = flt(entry['total_paid'])
+    # frappe.throw(f"{bank_entries}  === {cash_entries}")
+    bank_receipts = {(entry['party'], entry['posting_date']): entry['total_paid'] for entry in bank_entries}
+    cash_receipts = {(entry['party'], entry['posting_date']): entry['total_paid'] for entry in cash_entries}
 
+    # Update data rows
+    for row in data:
+        party = row.get('party')
+        posting_date = row.get('posting_date')
+        row['bank_amount'] = bank_receipts.get((party, posting_date), 0.0)
+        row['cash_amount'] = cash_receipts.get((party, posting_date), 0.0)
+        row['party_naming'] = frappe.db.get_value("Customer", party, "customer_name")
+
+    # Add credit limits
+    credit_limit_cache = {}
+    previous = None
+
+    for row in data:
+        current = row['party']
+        if current != previous:
+            if current not in credit_limit_cache:
+                credit_limit_cache[current] = frappe.db.get_value(
+                    "Customer Credit Limit", 
+                    {"parent": current, "company": company}, 
+                    "credit_limit"
+                )
+            row['credit_limit'] = credit_limit_cache[current]
+            previous = current
+        else:
+            row['credit_limit'] = 0
+
+    return data
+
+
+def add_receipts_data(data, from_date, to_date, mode_of_payment_filter, company, party_filter=None, party_group_filter=None):
+    mode_of_payment_conditions = ''
+    if mode_of_payment_filter:
+        placeholders = ', '.join(['%s'] * len(mode_of_payment_filter))
+        mode_of_payment_conditions = f"AND mode_of_payment IN ({placeholders})"
+
+    # Add party and party_group filters
+    party_conditions = ''
+    if party_filter:
+        party_conditions += f"AND party = %s "
+    if party_group_filter:
+        party_conditions += f"AND party IN (SELECT name FROM `tabCustomer` WHERE customer_group = %s) "
+
+    # Fetch bank and cash entries
+    bank_entries = frappe.db.sql(f"""
+        SELECT party, SUM(paid_amount) AS total_paid
+        FROM `tabPayment Entry`
+        WHERE posting_date BETWEEN %s AND %s
+        AND payment_type = 'Receive' AND docstatus = 1
+        AND mod_type = 'Bank'
+        {mode_of_payment_conditions}
+        {party_conditions}
+        GROUP BY party
+    """, (from_date, to_date) + tuple(mode_of_payment_filter) + ((party_filter,) if party_filter else ()) + ((party_group_filter,) if party_group_filter else ()), as_dict=True)
+
+    cash_entries = frappe.db.sql(f"""
+        SELECT party, SUM(paid_amount) AS total_paid
+        FROM `tabPayment Entry`
+        WHERE posting_date BETWEEN %s AND %s
+        AND payment_type = 'Receive' AND docstatus = 1
+        AND mod_type = 'Cash'
+        {mode_of_payment_conditions}
+        {party_conditions}
+        GROUP BY party
+    """, (from_date, to_date) + tuple(mode_of_payment_filter) + ((party_filter,) if party_filter else ()) + ((party_group_filter,) if party_group_filter else ()), as_dict=True)
+
+    bank_receipts = {entry['party']: entry['total_paid'] for entry in bank_entries}
+    cash_receipts = {entry['party']: entry['total_paid'] for entry in cash_entries}
+
+    # Update data rows
     for row in data:
         party = row.get('party')
         row['cash_amount'] = cash_receipts.get(party, 0.0)

@@ -5,18 +5,36 @@
 import frappe
 from frappe import _
 from frappe.utils import flt
-
 import erpnext
 from erpnext.accounts.report.item_wise_sales_register.item_wise_sales_register import (
-	add_sub_total_row,
 	add_total_row,
 	get_grand_total,
 	get_group_by_and_display_fields,
-	get_group_by_conditions,
 	get_tax_accounts,
 )
 from erpnext.accounts.report.utils import get_query_columns, get_values_for_columns
 
+def add_sub_total_row(item, total_row_map, group_by_value, tax_columns):
+	total_row = total_row_map.get(group_by_value)
+	total_row["stock_qty"] += item["stock_qty"]
+	total_row["amount"] += item["amount"]
+	total_row["total_tax"] += item["total_tax"]
+	total_row["total"] += item["total"]
+	total_row["percent_gt"] += item["percent_gt"]
+
+	for tax in tax_columns:
+		total_row.setdefault(frappe.scrub(tax + " Amount"), 0.0)
+		total_row[frappe.scrub(tax + " Amount")] += flt(item[frappe.scrub(tax + " Amount")])
+
+def get_group_by_conditions(filters, doctype):
+	if filters.get("group_by") == "Invoice":
+		return "ORDER BY `tab{0} Item`.parent desc".format(doctype)
+	elif filters.get("group_by") == "Item":
+		return "ORDER BY `tab{0} Item`.`item_code`".format(doctype)
+	elif filters.get("group_by") == "Item Group":
+		return "ORDER BY `tab{0} Item`.{1}".format(doctype, frappe.scrub(filters.get("group_by")))
+	elif filters.get("group_by") in ("Customer", "Customer Group", "Territory", "Supplier"):
+		return "ORDER BY `tab{0}`.{1}".format(doctype, frappe.scrub(filters.get("group_by")))
 
 def execute(filters=None):
 	return _execute(filters)
@@ -75,6 +93,7 @@ def _execute(filters=None, additional_table_columns=None):
 			"item_code": d.item_code,
 			"item_name": d.pi_item_name if d.pi_item_name else d.i_item_name,
 			"item_group": d.pi_item_group if d.pi_item_group else d.i_item_group,
+			"gst_treatment": d.gst_treatment,
 			"description": d.description,
 			"invoice": d.parent,
 			"posting_date": d.posting_date,
@@ -165,6 +184,12 @@ def get_columns(additional_table_columns, filters):
 					"fieldname": "item_group",
 					"fieldtype": "Link",
 					"options": "Item Group",
+					"width": 120,
+				},
+   				{
+					"label": _("Item Tax Status"),
+					"fieldname": "gst_treatment",
+					"fieldtype": "Data",
 					"width": 120,
 				}
 			]
@@ -288,10 +313,10 @@ def get_conditions(filters):
 	
 	for opts in (
 		("company", " and `tabPurchase Invoice`.company=%(company)s"),
-		("supplier", " and `tabPurchase Invoice`.supplier = %(supplier)s"),
-		("supplier_group", " and `tabPurchase Invoice`.supplier_group = %(supplier_group)s"),
-		("item_code", " and `tabPurchase Invoice Item`.item_code = %(item_code)s"),
-		("item_group", " and `tabPurchase Invoice Item`.item_group = %(item_group)s"),
+		("supplier", " and `tabPurchase Invoice`.supplier in %(supplier)s"),
+		("supplier_group", " and `tabPurchase Invoice`.supplier_group in %(supplier_group)s"),
+		("item_code", " and `tabPurchase Invoice Item`.item_code in %(item_code)s"),
+		("item_group", " and `tabPurchase Invoice Item`.item_group in %(item_group)s"),
 		("from_date", " and `tabPurchase Invoice`.posting_date>=%(from_date)s"),
 		("to_date", " and `tabPurchase Invoice`.posting_date<=%(to_date)s"),
 		("mode_of_payment", " and ifnull(mode_of_payment, '') = %(mode_of_payment)s"),
@@ -317,7 +342,9 @@ def get_items(filters, additional_query_columns):
 	return frappe.db.sql(
 		"""
 		select
-			`tabPurchase Invoice Item`.`name`, `tabPurchase Invoice Item`.`parent`,
+			`tabPurchase Invoice Item`.`name`, 
+			`tabPurchase Invoice Item`.`gst_treatment`, 
+   			`tabPurchase Invoice Item`.`parent`,
 			`tabPurchase Invoice`.posting_date, `tabPurchase Invoice`.credit_to, `tabPurchase Invoice`.company,
 			`tabPurchase Invoice`.supplier, `tabPurchase Invoice`.remarks, `tabPurchase Invoice`.base_net_total,
 			`tabPurchase Invoice`.unrealized_profit_loss_account,
