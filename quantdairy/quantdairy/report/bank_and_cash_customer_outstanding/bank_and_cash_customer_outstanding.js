@@ -97,6 +97,7 @@
 
 
 
+
 frappe.query_reports["Bank and Cash Customer Outstanding"] = {
     "filters": [
         {

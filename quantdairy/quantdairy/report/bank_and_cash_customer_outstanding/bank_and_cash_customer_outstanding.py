@@ -221,18 +221,27 @@ class PartyLedgerSummaryReport:
                     party_data.paid_amount -= amount
 
             party_data.closing_balance += amount
-
+            
         out = []
+        flag = 1
         opening, close = 0, 0
         for party_posting_key, row in self.party_data.items():
             if "before_" not in party_posting_key:
                 if row.opening_balance or row.invoiced_amount or row.paid_amount or row.return_amount or row.closing_balance:
                     total_party_adjustment = sum(amount for amount in self.party_adjustment_details.get(row.party, {}).values())
-                    row.paid_amount -= total_party_adjustment
-
-                    adjustments = self.party_adjustment_details.get(row.party, {})
-                    for account in self.party_adjustment_accounts:
-                        row["adj_" + scrub(account)] = adjustments.get(account, 0)
+                    if not self.filters.get("date_wise_bifurcation"):
+                        row.paid_amount -= total_party_adjustment
+                        adjustments = self.party_adjustment_details.get(row.party, {})
+                        for account in self.party_adjustment_accounts:
+                            row["adj_" + scrub(account)] = adjustments.get(account, 0)
+                    else:
+                        if row.paid_amount and flag:
+                            row.paid_amount -= total_party_adjustment
+                            adjustments = self.party_adjustment_details.get(row.party, {})
+                            for account in self.party_adjustment_accounts:
+                                row["adj_" + scrub(account)] = adjustments.get(account, 0)
+                            flag = 0
+                    
                     if self.filters.get("date_wise_bifurcation"):
                         if row.posting_date < self.filters.from_date:
                             opening += row.opening_balance
@@ -244,7 +253,6 @@ class PartyLedgerSummaryReport:
         if self.filters.get("date_wise_bifurcation"):
             out.insert(0, {'party': ' ', 'party_name': ' ', 'opening_balance': opening, 'closing_balance': close, 'currency': company_currency})
         return out
-
 
     def get_gl_entries(self):
         conditions = self.prepare_conditions()
