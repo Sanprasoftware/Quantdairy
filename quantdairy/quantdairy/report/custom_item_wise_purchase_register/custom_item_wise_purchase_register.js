@@ -23,8 +23,8 @@ frappe.query_reports["Custom Item-wise Purchase Register"] = {
 			fieldtype: "MultiSelectList",
 			options: "Item",
 			get_data: function(txt) {
-                return frappe.db.get_link_options("Item", txt);
-            },
+				return frappe.db.get_link_options("Item", txt);
+			},
 		},
 		{
 			fieldname: "item_group",
@@ -32,8 +32,8 @@ frappe.query_reports["Custom Item-wise Purchase Register"] = {
 			fieldtype: "MultiSelectList",
 			options: "Item Group",
 			get_data: function(txt) {
-                return frappe.db.get_link_options("Item Group", txt);
-            },
+				return frappe.db.get_link_options("Item Group", txt);
+			},
 		},
 		{
 			fieldname: "supplier",
@@ -41,8 +41,8 @@ frappe.query_reports["Custom Item-wise Purchase Register"] = {
 			fieldtype: "MultiSelectList",
 			options: "Supplier",
 			get_data: function(txt) {
-                return frappe.db.get_link_options("Supplier", txt);
-            },
+				return frappe.db.get_link_options("Supplier", txt);
+			},
 		},
 		{
 			fieldname: "supplier_group",
@@ -50,8 +50,8 @@ frappe.query_reports["Custom Item-wise Purchase Register"] = {
 			fieldtype: "MultiSelectList",
 			options: "Supplier Group",
 			get_data: function(txt) {
-                return frappe.db.get_link_options("Supplier Group", txt);
-            },
+				return frappe.db.get_link_options("Supplier Group", txt);
+			},
 		},
 		{
 			fieldname: "company",
@@ -71,6 +71,12 @@ frappe.query_reports["Custom Item-wise Purchase Register"] = {
 			fieldname: "group_by",
 			fieldtype: "Select",
 			options: ["","Supplier", "Item Group", "Item", "Invoice"],
+		},
+		{
+			fieldname: "warehouse",
+			label: __("Warehouse"),
+			fieldtype: "Link",
+			options: "Warehouse",
 		},
 	],
 	formatter: function (value, row, column, data, default_formatter) {

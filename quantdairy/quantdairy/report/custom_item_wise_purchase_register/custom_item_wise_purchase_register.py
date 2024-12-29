@@ -77,74 +77,143 @@ def _execute(filters=None, additional_table_columns=None):
 
 	if filters.get("group_by"):
 		grand_total = get_grand_total(filters, "Purchase Invoice")
-
+	
 	for d in item_list:
-		purchase_receipt = None
-		if d.purchase_receipt:
-			purchase_receipt = d.purchase_receipt
-		elif d.po_detail:
-			purchase_receipt = ", ".join(po_pr_map.get(d.po_detail, []))
+		warehouse = frappe.get_value("Purchase Invoice Item", d.name, 'warehouse')
+		if filters.warehouse and filters.warehouse == warehouse:
+			purchase_receipt = None
+			if d.purchase_receipt:
+				purchase_receipt = d.purchase_receipt
+			elif d.po_detail:
+				purchase_receipt = ", ".join(po_pr_map.get(d.po_detail, []))
 
-		expense_account = (
-			d.unrealized_profit_loss_account or d.expense_account or aii_account_map.get(d.company)
-		)
+			expense_account = (
+				d.unrealized_profit_loss_account or d.expense_account or aii_account_map.get(d.company)
+			)
 
-		row = {
-			"item_code": d.item_code,
-			"item_name": d.pi_item_name if d.pi_item_name else d.i_item_name,
-			"item_group": d.pi_item_group if d.pi_item_group else d.i_item_group,
-			"gst_treatment": d.gst_treatment,
-			"description": d.description,
-			"invoice": d.parent,
-			"posting_date": d.posting_date,
-			"supplier": d.supplier,
-			"supplier_name": d.supplier_name,
-			**get_values_for_columns(additional_table_columns, d),
-			"credit_to": d.credit_to,
-			"mode_of_payment": d.mode_of_payment,
-			"project": d.project,
-			"company": d.company,
-			"purchase_order": d.purchase_order,
-			"purchase_receipt": purchase_receipt,
-			"expense_account": expense_account,
-			"stock_qty": d.stock_qty,
-			"stock_uom": d.stock_uom,
-			"rate": d.base_net_amount / d.stock_qty if d.stock_qty else d.base_net_amount,
-			"amount": d.base_net_amount,
-		}
+			row = {
+				"item_code": d.item_code,
+				"item_name": d.pi_item_name if d.pi_item_name else d.i_item_name,
+				"item_group": d.pi_item_group if d.pi_item_group else d.i_item_group,
+				"gst_treatment": d.gst_treatment,
+				"description": d.description,
+				"invoice": d.parent,
+				"posting_date": d.posting_date,
+				"supplier": d.supplier,
+				"supplier_name": d.supplier_name,
+				**get_values_for_columns(additional_table_columns, d),
+				"credit_to": d.credit_to,
+				"mode_of_payment": d.mode_of_payment,
+				"project": d.project,
+				"company": d.company,
+				"purchase_order": d.purchase_order,
+				"purchase_receipt": purchase_receipt,
+				"expense_account": expense_account,
+				"stock_qty": d.stock_qty,
+				"stock_uom": d.stock_uom,
+				"rate": d.base_net_amount / d.stock_qty if d.stock_qty else d.base_net_amount,
+				"amount": d.base_net_amount,
+			}
 
-		total_tax = 0
-		for tax in tax_columns:
-			item_tax = itemised_tax.get(d.name, {}).get(tax, {})
+			total_tax = 0
+			for tax in tax_columns:
+				item_tax = itemised_tax.get(d.name, {}).get(tax, {})
+				row.update(
+					{
+						scrubbed_tax_fields[tax + " Rate"]: item_tax.get("tax_rate", 0),
+						scrubbed_tax_fields[tax + " Amount"]: item_tax.get("tax_amount", 0),
+					}
+				)
+				total_tax += flt(item_tax.get("tax_amount"))
+
 			row.update(
-				{
-					scrubbed_tax_fields[tax + " Rate"]: item_tax.get("tax_rate", 0),
-					scrubbed_tax_fields[tax + " Amount"]: item_tax.get("tax_amount", 0),
-				}
+				{"total_tax": total_tax, "total": d.base_net_amount + total_tax, "currency": company_currency}
 			)
-			total_tax += flt(item_tax.get("tax_amount"))
 
-		row.update(
-			{"total_tax": total_tax, "total": d.base_net_amount + total_tax, "currency": company_currency}
-		)
+			if filters.get("group_by"):
+				row.update({"percent_gt": flt(row["total"] / grand_total) * 100})
+				group_by_field, subtotal_display_field = get_group_by_and_display_fields(filters)
+				data, prev_group_by_value = add_total_row(
+					data,
+					filters,
+					prev_group_by_value,
+					d,
+					total_row_map,
+					group_by_field,
+					subtotal_display_field,
+					grand_total,
+					tax_columns,
+				)
+				add_sub_total_row(row, total_row_map, d.get(group_by_field, ""), tax_columns)
 
-		if filters.get("group_by"):
-			row.update({"percent_gt": flt(row["total"] / grand_total) * 100})
-			group_by_field, subtotal_display_field = get_group_by_and_display_fields(filters)
-			data, prev_group_by_value = add_total_row(
-				data,
-				filters,
-				prev_group_by_value,
-				d,
-				total_row_map,
-				group_by_field,
-				subtotal_display_field,
-				grand_total,
-				tax_columns,
+			data.append(row)
+		else:
+			purchase_receipt = None
+			if d.purchase_receipt:
+				purchase_receipt = d.purchase_receipt
+			elif d.po_detail:
+				purchase_receipt = ", ".join(po_pr_map.get(d.po_detail, []))
+
+			expense_account = (
+				d.unrealized_profit_loss_account or d.expense_account or aii_account_map.get(d.company)
 			)
-			add_sub_total_row(row, total_row_map, d.get(group_by_field, ""), tax_columns)
 
-		data.append(row)
+			row = {
+				"item_code": d.item_code,
+				"item_name": d.pi_item_name if d.pi_item_name else d.i_item_name,
+				"item_group": d.pi_item_group if d.pi_item_group else d.i_item_group,
+				"gst_treatment": d.gst_treatment,
+				"description": d.description,
+				"invoice": d.parent,
+				"posting_date": d.posting_date,
+				"supplier": d.supplier,
+				"supplier_name": d.supplier_name,
+				**get_values_for_columns(additional_table_columns, d),
+				"credit_to": d.credit_to,
+				"mode_of_payment": d.mode_of_payment,
+				"project": d.project,
+				"company": d.company,
+				"purchase_order": d.purchase_order,
+				"purchase_receipt": purchase_receipt,
+				"expense_account": expense_account,
+				"stock_qty": d.stock_qty,
+				"stock_uom": d.stock_uom,
+				"rate": d.base_net_amount / d.stock_qty if d.stock_qty else d.base_net_amount,
+				"amount": d.base_net_amount,
+			}
+
+			total_tax = 0
+			for tax in tax_columns:
+				item_tax = itemised_tax.get(d.name, {}).get(tax, {})
+				row.update(
+					{
+						scrubbed_tax_fields[tax + " Rate"]: item_tax.get("tax_rate", 0),
+						scrubbed_tax_fields[tax + " Amount"]: item_tax.get("tax_amount", 0),
+					}
+				)
+				total_tax += flt(item_tax.get("tax_amount"))
+
+			row.update(
+				{"total_tax": total_tax, "total": d.base_net_amount + total_tax, "currency": company_currency}
+			)
+
+			if filters.get("group_by"):
+				row.update({"percent_gt": flt(row["total"] / grand_total) * 100})
+				group_by_field, subtotal_display_field = get_group_by_and_display_fields(filters)
+				data, prev_group_by_value = add_total_row(
+					data,
+					filters,
+					prev_group_by_value,
+					d,
+					total_row_map,
+					group_by_field,
+					subtotal_display_field,
+					grand_total,
+					tax_columns,
+				)
+				add_sub_total_row(row, total_row_map, d.get(group_by_field, ""), tax_columns)
+
+			data.append(row)
 
 	if filters.get("group_by") and item_list:
 		total_row = total_row_map.get(prev_group_by_value or d.get("item_name"))
@@ -186,7 +255,7 @@ def get_columns(additional_table_columns, filters):
 					"options": "Item Group",
 					"width": 120,
 				},
-   				{
+				{
 					"label": _("Item Tax Status"),
 					"fieldname": "gst_treatment",
 					"fieldtype": "Data",
@@ -344,7 +413,7 @@ def get_items(filters, additional_query_columns):
 		select
 			`tabPurchase Invoice Item`.`name`, 
 			`tabPurchase Invoice Item`.`gst_treatment`, 
-   			`tabPurchase Invoice Item`.`parent`,
+			`tabPurchase Invoice Item`.`parent`,
 			`tabPurchase Invoice`.posting_date, `tabPurchase Invoice`.credit_to, `tabPurchase Invoice`.company,
 			`tabPurchase Invoice`.supplier, `tabPurchase Invoice`.remarks, `tabPurchase Invoice`.base_net_total,
 			`tabPurchase Invoice`.unrealized_profit_loss_account,
@@ -381,7 +450,7 @@ def get_purchase_receipts_against_purchase_order(item_list):
 		purchase_receipts = frappe.db.sql(
 			"""
 			select parent, purchase_order_item
-			from `tabPurchase Receipt Item`
+			from `tabPurchase Receipt Item` 
 			where docstatus=1 and purchase_order_item in (%s)
 			group by purchase_order_item, parent
 		"""
