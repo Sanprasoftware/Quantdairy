@@ -291,7 +291,7 @@ class PartyLedgerSummaryReport:
             conditions.append("ifnull(finance_book,'') in (%(finance_book)s, '')")
 
         if self.filters.get("party"):
-            conditions.append("party=%(party)s")
+            conditions.append("party in %(party)s")
 
         if self.filters.party_type == "Customer":
             if self.filters.get("customer_group"):
@@ -560,7 +560,7 @@ def add_receipts_data(data, from_date, to_date, mode_of_payment_filter, company,
     # Add party and party_group filters
     party_conditions = ''
     if party_filter:
-        party_conditions += f"AND party = %s "
+        party_conditions += f"AND party IN %s "
     if party_group_filter:
         party_conditions += f"AND party IN (SELECT name FROM `tabCustomer` WHERE customer_group = %s) "
 
