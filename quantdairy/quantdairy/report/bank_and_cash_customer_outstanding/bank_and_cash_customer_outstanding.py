@@ -491,7 +491,7 @@ def add_receipts_data_bifurcation(data, from_date, to_date, mode_of_payment_filt
     # Add party and party_group filters
     party_conditions = ''
     if party_filter:
-        party_conditions += f"AND party = %s "
+        party_conditions += f"AND party IN %s "
     if party_group_filter:
         party_conditions += f"AND party IN (SELECT name FROM `tabCustomer` WHERE customer_group = %s) "
 
