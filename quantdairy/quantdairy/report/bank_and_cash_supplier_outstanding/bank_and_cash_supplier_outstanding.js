@@ -57,5 +57,12 @@ frappe.query_reports["Bank and Cash Supplier Outstanding"] = {
 			},
 			reqd: 0,
 		},
+		{
+            fieldname: "date_wise_bifurcation",
+            label: __("Date Wise Bifurcation"),
+            fieldtype: "Check",
+            default: 0,
+            reqd: 0,
+        }
 	]
 };

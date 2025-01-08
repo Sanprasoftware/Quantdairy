@@ -78,6 +78,12 @@ frappe.query_reports["Custom Item-wise Purchase Register"] = {
 			fieldtype: "Link",
 			options: "Warehouse",
 		},
+		{
+			fieldname: "supplier_warehouse",
+			label: __("Supplier Warehouse"),
+			fieldtype: "Link",
+			options: "Warehouse",
+		},
 	],
 	formatter: function (value, row, column, data, default_formatter) {
 		value = default_formatter(value, row, column, data);
